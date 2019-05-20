@@ -7,7 +7,7 @@ import java.io.IOException;
 
 class Combination {
 
-    private static final int WIDTH = 40;
+    private static final float WIDTH = 40;
     private final PDImageXObject[] images;
 
     private final int i;
@@ -23,7 +23,9 @@ class Combination {
         this.l = l;
     }
 
-    void draw(PDPageContentStream contents, int x, int y) throws IOException {
+    void draw(PDPageContentStream contents, float x, float y) throws IOException {
+        RoundRect.addRoundRect(contents, new Position(x - 8, y + (2 * WIDTH) + 3), 2 * WIDTH + 12, 2 * WIDTH + 10, 12);
+        contents.stroke();
         contents.drawImage(images[i], x, y);
         contents.drawImage(images[j], x + WIDTH, y);
         contents.drawImage(images[k], x, y + WIDTH);
