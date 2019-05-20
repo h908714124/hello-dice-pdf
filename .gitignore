@@ -1,0 +1,9 @@
+/.idea
+/*.iml
+*~
+/dependency-reduced-pom.xml
+/.gradle
+/build
+/out
+/src/main/generated
+/out.pdf
