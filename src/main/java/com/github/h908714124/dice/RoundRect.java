@@ -8,7 +8,7 @@ import java.io.IOException;
 /**
  * Stolen from https://github.com/ralfstuckert/pdfbox-layout
  */
-public class RoundRect {
+class RoundRect {
 
     private final static float BEZ = 0.551915024494f;
 
@@ -90,7 +90,6 @@ public class RoundRect {
     private static void addLine(
             final PDPageContentStream contentStream,
             float x1,
-
             float y1,
             float x2,
             float y2) throws IOException {

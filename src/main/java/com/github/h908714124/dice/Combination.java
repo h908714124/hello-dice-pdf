@@ -23,12 +23,12 @@ class Combination {
         this.l = l;
     }
 
-    void draw(PDPageContentStream contents, float x, float y) throws IOException {
-        RoundRect.addRoundRect(contents, new Position(x - 8, y + (2 * WIDTH) + 3), 2 * WIDTH + 12, 2 * WIDTH + 10, 12);
-        contents.stroke();
-        contents.drawImage(images[i], x, y);
-        contents.drawImage(images[j], x + WIDTH, y);
-        contents.drawImage(images[k], x, y + WIDTH);
-        contents.drawImage(images[l], x + WIDTH, y + WIDTH);
+    void draw(PDPageContentStream contentStream, float x, float y) throws IOException {
+        RoundRect.addRoundRect(contentStream, new Position(x - 8, y + (2 * WIDTH) + 3), 2 * WIDTH + 12, 2 * WIDTH + 10, 12);
+        contentStream.stroke();
+        contentStream.drawImage(images[i], x, y);
+        contentStream.drawImage(images[j], x + WIDTH, y);
+        contentStream.drawImage(images[k], x, y + WIDTH);
+        contentStream.drawImage(images[l], x + WIDTH, y + WIDTH);
     }
 }

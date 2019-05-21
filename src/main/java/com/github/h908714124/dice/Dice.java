@@ -5,11 +5,14 @@ import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.graphics.image.PDImageXObject;
 
+import java.awt.Color;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
+
+import static com.github.h908714124.dice.Oled.isPixel;
 
 public class Dice {
 
@@ -55,11 +58,16 @@ public class Dice {
         while (it.hasNext()) {
             PDPage page = new PDPage();
             doc.addPage(page);
-            try (PDPageContentStream contents = new PDPageContentStream(doc, page)) {
-                for (int i = 0; i < 5; i++) {
-                    for (int j = 0; j < 7; j++) {
+
+            try (PDPageContentStream contentStream = new PDPageContentStream(doc, page)) {
+                for (int col = 0; col < 5; col++) {
+                    for (int row = 0; row < 7; row++) {
                         if (it.hasNext()) {
-                            it.next().draw(contents, 70 + (i * G), 70 + (j * G));
+                            if (isPixel('A', col, 6 - row)) {
+                                contentStream.setStrokingColor(Color.RED);
+                            }
+                            it.next().draw(contentStream, 70 + (col * G), 70 + (row * G));
+                            contentStream.setStrokingColor(Color.BLACK);
                         }
                     }
                 }
