@@ -31,4 +31,8 @@ class Combination {
         contentStream.drawImage(images[k], x, y + WIDTH);
         contentStream.drawImage(images[l], x + WIDTH, y + WIDTH);
     }
+
+    int sum() {
+        return i + j + k + l + 4;
+    }
 }

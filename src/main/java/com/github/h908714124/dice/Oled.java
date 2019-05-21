@@ -6,6 +6,7 @@ package com.github.h908714124.dice;
 class Oled {
 
     private static final byte[] FONT = new byte[]{
+            0x00, 0x00, 0x00, 0x00, 0x00, // (space)
             0x7E, 0x11, 0x11, 0x11, 0x7E, // A
             0x7F, 0x49, 0x49, 0x49, 0x36, // B
             0x3E, 0x41, 0x41, 0x41, 0x22, // C
@@ -34,7 +35,7 @@ class Oled {
             0x61, 0x51, 0x49, 0x45, 0x43 // Z
     };
 
-    private static final char[] lookup = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".toCharArray();
+    private static final char[] lookup = " ABCDEFGHIJKLMNOPQRSTUVWXYZ".toCharArray();
 
     static boolean isPixel(char c, int col, int row) {
         byte rowsByte = getRowsByte(c, col);
@@ -49,7 +50,7 @@ class Oled {
     }
 
     private static int lookupIndex(char c) {
-        for (int i = 0; i < 26; i++) {
+        for (int i = 0; i < lookup.length; i++) {
             if (lookup[i] == c) {
                 return i;
             }
