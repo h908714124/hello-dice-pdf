@@ -11,13 +11,14 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
-import java.util.concurrent.ThreadLocalRandom;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 import static com.github.h908714124.dice.Oled.isPixel;
 
 public class Dice {
 
-    private static final int G = 100;
+    private static final int G = 96;
     private static final int COLS = 5;
     private static final int ROWS = 7;
 
@@ -46,33 +47,42 @@ public class Dice {
 
     private void drawDice() throws IOException {
         List<Combination> combinations = allCombinations();
-
-
-        Iterator<Combination> it = combinations.iterator();
+        Map<Boolean, List<Combination>> m = combinations.stream().collect(Collectors.partitioningBy(c -> c.sum() == 10 || c.sum() == 12));
+        Iterator<Combination> it1 = m.get(false).iterator();
+        Iterator<Combination> it2 = m.get(true).iterator();
 
         int p = 0;
 
-        while (it.hasNext()) {
+        while (it1.hasNext()) {
             PDPage page = new PDPage();
             doc.addPage(page);
             char c = p >= message.length() ? ' ' : message.charAt(p);
 
             try (PDPageContentStream contentStream = new PDPageContentStream(doc, page)) {
-                int randCol = ThreadLocalRandom.current().nextInt(COLS);
-                int randRow = ThreadLocalRandom.current().nextInt(ROWS);
                 for (int col = 0; col < COLS; col++) {
                     for (int row = 0; row < ROWS; row++) {
-                        if (it.hasNext()) {
-                            if (c == '.' ? col == randCol && row == randRow : isPixel(c, col, (ROWS - 1) - row)) {
-                                contentStream.setStrokingColor(Color.RED);
+                        Combination next;
+                        if (isPixel(c, col, (ROWS - 1) - row)) {
+                            if (!it2.hasNext()) {
+                                continue;
+                            } else {
+                                next = it2.next();
                             }
-                            it.next().draw(contentStream, 70 + (col * G), 70 + (row * G));
-                            contentStream.setStrokingColor(Color.BLACK);
+                        } else {
+                            if (!it1.hasNext()) {
+                                continue;
+                            } else {
+                                next = it1.next();
+                            }
                         }
+                        next.draw(contentStream, 96 + (col * G), 70 + (row * G));
                     }
                 }
             }
             p++;
+        }
+        if (it2.hasNext()) {
+            throw new IllegalStateException("ouch");
         }
     }
 
